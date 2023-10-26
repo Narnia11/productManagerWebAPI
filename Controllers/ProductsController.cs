@@ -15,22 +15,20 @@ public class ProductsController : ControllerBase
     this.context = context;
   }
 
-  [HttpGet]
-  public IEnumerable<Product> GetProducts()
-  {
-    var products = context.Products.ToList();
+    [HttpGet]
+    public IEnumerable<Product> GetProducts([FromQuery] string? productName)
+    {
+        var products = productName is null 
+            ? context.Products.ToList()
+            : context.Products.Where(x => x.ProductName.Contains(productName)).ToList();
 
-    return products;
-  }
+        return products;
+    }
 
   [HttpGet("{serialNum}")]
   public ActionResult<Product> GetProduct(string serialNum)
   {
-    // var product = context.Products
-    // .FirstOrDefault(x => x.SerialNum == serialNum);
-    //captall and small alphabets are accepted:
-    var product = context.Products
-        .FirstOrDefault(x => x.SerialNum.Equals(serialNum, StringComparison.OrdinalIgnoreCase));
+    var product = context.Products.FirstOrDefault(x => x.SerialNum == serialNum);
 
     if (product is null)
     {
@@ -42,24 +40,10 @@ public class ProductsController : ControllerBase
   [HttpPost]
   public IActionResult CreateProduct(Product product)
   {
+    //"Products" is defined in DbContextApplication
     context.Products.Add(product);
 
     context.SaveChanges();
-
-    // //===========>
-    // if (string.IsNullOrEmpty(product.ProductName))
-    //   return BadRequest(Product Name is required.);
-
-    // if (string.IsNullOrEmpty(product.SerialNum))
-    //   return BadRequest(Serial Number is required.);
-
-    //   if (string.IsNullOrEmpty(product.ProductDesc))
-    //   return BadRequest(Product Description is required.);
-
-    //   if (string.IsNullOrEmpty(product.ImageUrl))
-    //   return BadRequest(Image Url is required.);
-    // //<===========
-
 
     return CreatedAtAction(
       nameof(GetProduct),
@@ -67,10 +51,10 @@ public class ProductsController : ControllerBase
       product);
   }
 
-  [HttpDelete("{id}")]
-  public IActionResult DeleteProduct(int id)
+  [HttpDelete("{serialNum}")]
+  public IActionResult DeleteProduct(string serialNum)
   {
-    var product = context.Products.FirstOrDefault(x => x.Id == id);
+    var product = context.Products.FirstOrDefault(x => x.SerialNum == serialNum);
 
     if (product is null)
     {
