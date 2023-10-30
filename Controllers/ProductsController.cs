@@ -61,7 +61,7 @@ var productsDto = products.Select(products => new ProductDto
 
   //POST https://localhost:8000/products
   [HttpPost]
-  public IActionResult CreateProduct(Product product)
+  public ActionResult<ProductDto> CreateProduct(Product product)
   {
     //"Products" is defined in DbContextApplication
     context.Products.Add(product);
@@ -78,8 +78,6 @@ var productsDto = products.Select(products => new ProductDto
       Price = product.Price
     };
 
-    //return Created("", productDto); // 201 Created
-////////////////////////////////////////////////////////////
     return CreatedAtAction(
       nameof(GetProduct),
       new { serialNum = product.SerialNum },
