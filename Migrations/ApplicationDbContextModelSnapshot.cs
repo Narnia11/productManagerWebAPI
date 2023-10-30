@@ -54,6 +54,9 @@ namespace ProductManagerWebAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SerialNum")
+                        .IsUnique();
+
                     b.ToTable("Products");
                 });
 #pragma warning restore 612, 618

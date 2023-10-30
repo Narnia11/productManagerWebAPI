@@ -26,6 +26,12 @@ namespace ProductManagerWebAPI.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_SerialNum",
+                table: "Products",
+                column: "SerialNum",
+                unique: true);
         }
 
         /// <inheritdoc />

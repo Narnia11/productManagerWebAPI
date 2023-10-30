@@ -59,30 +59,60 @@ var productsDto = products.Select(products => new ProductDto
     return productDto;
   }
 
-  //POST https://localhost:8000/products
-  [HttpPost]
-  public ActionResult<ProductDto> CreateProduct(Product product)
-  {
-    //"Products" is defined in DbContextApplication
-    context.Products.Add(product);
+  // //POST https://localhost:8000/products
+  // [HttpPost]
+  // public ActionResult<ProductDto> CreateProduct(Product product)
+  // {
+  //   //"Products" is defined in DbContextApplication
+  //   context.Products.Add(product);
 
+  //   context.SaveChanges();
+
+  //   var productDto = new ProductDto
+  //   {
+  //     Id = product.Id,
+  //     ProductName = product.ProductName,
+  //     SerialNum = product.SerialNum,
+  //     ProductDesc = product.ProductDesc,
+  //     ImageUrl = product.ImageUrl,
+  //     Price = product.Price
+  //   };
+
+  //   return CreatedAtAction(
+  //     nameof(GetProduct),
+  //     new { serialNum = product.SerialNum },
+  //     product);
+  // }
+
+  [HttpPost]
+public ActionResult<ProductDto> CreateProduct(Product product)
+{
+    // Check if a product with the same serialNum already exists
+    if (context.Products.Any(p => p.SerialNum == product.SerialNum))
+    {
+        // Return a BadRequest response indicating that a product with the same serialNum already exists.
+        return BadRequest("A product with the same serialNum already exists.");
+    }
+
+    // If no duplicate serialNum is found, proceed to add the product.
+    context.Products.Add(product);
     context.SaveChanges();
 
     var productDto = new ProductDto
     {
-      Id = product.Id,
-      ProductName = product.ProductName,
-      SerialNum = product.SerialNum,
-      ProductDesc = product.ProductDesc,
-      ImageUrl = product.ImageUrl,
-      Price = product.Price
+        Id = product.Id,
+        ProductName = product.ProductName,
+        SerialNum = product.SerialNum,
+        ProductDesc = product.ProductDesc,
+        ImageUrl = product.ImageUrl,
+        Price = product.Price
     };
 
     return CreatedAtAction(
-      nameof(GetProduct),
-      new { serialNum = product.SerialNum },
-      product);
-  }
+        nameof(GetProduct),
+        new { serialNum = product.SerialNum },
+        product);
+}
 
   //DELETE https://localhost:8000/products/{sku}
   [HttpDelete("{serialNum}")]
