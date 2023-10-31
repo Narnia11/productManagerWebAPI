@@ -17,7 +17,7 @@ namespace ProductManagerWebAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SerialNum = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SerialNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductDesc = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false)
@@ -26,12 +26,6 @@ namespace ProductManagerWebAPI.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_SerialNum",
-                table: "Products",
-                column: "SerialNum",
-                unique: true);
         }
 
         /// <inheritdoc />

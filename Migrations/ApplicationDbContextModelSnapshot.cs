@@ -46,12 +46,9 @@ namespace ProductManagerWebAPI.Migrations
 
                     b.Property<string>("SerialNum")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SerialNum")
-                        .IsUnique();
 
                     b.ToTable("Products");
                 });

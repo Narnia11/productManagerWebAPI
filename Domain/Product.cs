@@ -1,9 +1,5 @@
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-
 namespace ProductManagerWebAPI.Domain;
 
-[Index(nameof(SerialNum), IsUnique = true)]
 public class Product
 {
     public int Id { get; set; }

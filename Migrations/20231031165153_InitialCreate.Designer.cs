@@ -11,7 +11,7 @@ using ProductManagerWebAPI.Data;
 namespace ProductManagerWebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231031164352_InitialCreate")]
+    [Migration("20231031165153_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -49,12 +49,9 @@ namespace ProductManagerWebAPI.Migrations
 
                     b.Property<string>("SerialNum")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SerialNum")
-                        .IsUnique();
 
                     b.ToTable("Products");
                 });
