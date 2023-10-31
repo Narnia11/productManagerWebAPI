@@ -1,6 +1,7 @@
 using ProductManagerWebAPI.Domain;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagerWebAPI.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProductManagerWebAPI.Controllers;
 
@@ -17,36 +18,50 @@ public class ProductsController : ControllerBase
 
   //GET https://localhost:8000/products
   //GET https://localhost:8000/products?productName={productName}
+  /// <summary>
+  /// Fetches all products
+  /// </summary>
+  /// <param name="productName">Filter on productName</param>
+  /// <returns>Array of products</returns>
   [HttpGet]
+  //[Produces("application/json")]
+ // [ProducesResponseType(StatusCodes.Status200OK)]
   public IEnumerable<ProductDto> GetProducts([FromQuery] string? productName)
-  {
-    var products = productName is null
+  { 
+    IEnumerable<Product> products = string.IsNullOrEmpty(productName)
         ? context.Products.ToList()
-        : context.Products.Where(x => x.ProductName.Contains(productName)).ToList();
+        : context.Products.Where(x => x.ProductName == productName);
 
-var productsDto = products.Select(products => new ProductDto
+    // DTO - Data Transfer Object
+    IEnumerable<ProductDto> productDtos = products.Select(x => new ProductDto
     {
-      Id = products.Id,
-      ProductName = products.ProductName,
-      SerialNum = products.SerialNum,
-      ProductDesc = products.ProductDesc,
-      ImageUrl = products.ImageUrl,
-      Price = products.Price
+      Id = x.Id,
+      ProductName = x.ProductName,
+      SerialNum = x.SerialNum,
+      ProductDesc = x.ProductDesc,
+      ImageUrl = x.ImageUrl,
+      Price = x.Price
     });
 
-    return productsDto;
+    return productDtos;
   }
 
   //GET https://localhost:8000/products/{sku}
+  /// <summary>
+  /// Searches a product by serialNum
+  /// </summary>
   [HttpGet("{serialNum}")]
+  [Produces("application/json")]
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status404NotFound)]
   public ActionResult<ProductDto> GetProduct(string serialNum)
   {
     var product = context.Products.FirstOrDefault(x => x.SerialNum == serialNum);
 
     if (product is null)
-      return NotFound();
+      return NotFound();// 404 Not Found
 
-      var productDto = new ProductDto
+    var productDto = new ProductDto
     {
       Id = product.Id,
       ProductName = product.ProductName,
@@ -55,43 +70,33 @@ var productsDto = products.Select(products => new ProductDto
       ImageUrl = product.ImageUrl,
       Price = product.Price
     };
-    
-    return productDto;
+
+    return productDto;// 200 OK
   }
 
-  // //POST https://localhost:8000/products
-  // [HttpPost]
-  // public ActionResult<ProductDto> CreateProduct(Product product)
-  // {
-  //   //"Products" is defined in DbContextApplication
-  //   context.Products.Add(product);
-
-  //   context.SaveChanges();
-
-  //   var productDto = new ProductDto
-  //   {
-  //     Id = product.Id,
-  //     ProductName = product.ProductName,
-  //     SerialNum = product.SerialNum,
-  //     ProductDesc = product.ProductDesc,
-  //     ImageUrl = product.ImageUrl,
-  //     Price = product.Price
-  //   };
-
-  //   return CreatedAtAction(
-  //     nameof(GetProduct),
-  //     new { serialNum = product.SerialNum },
-  //     product);
-  // }
-
+  /// <summary>
+  /// Creates new product
+  /// </summary>
   [HttpPost]
-public ActionResult<ProductDto> CreateProduct(Product product)
-{
+  [Consumes("application/json")]
+  [Produces("application/json")]
+  [ProducesResponseType(StatusCodes.Status201Created)]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]//checks CreateProductRequest requirements&conditions
+  public ActionResult<ProductDto> CreateProduct(CreateProductRequest request)
+  {
+    var product = new Product
+    {
+      ProductName = request.ProductName,
+      SerialNum = request.SerialNum,
+      ProductDesc = request.ProductDesc,
+      ImageUrl = request.ImageUrl,
+      Price = request.Price
+    };
+
     // Check if a product with the same serialNum already exists
     if (context.Products.Any(p => p.SerialNum == product.SerialNum))
     {
-        // Return a BadRequest response indicating that a product with the same serialNum already exists.
-        return BadRequest("A product with the same serialNum already exists.");
+      return BadRequest("A product with the same serialNum already exists.");
     }
 
     // If no duplicate serialNum is found, proceed to add the product.
@@ -100,22 +105,28 @@ public ActionResult<ProductDto> CreateProduct(Product product)
 
     var productDto = new ProductDto
     {
-        Id = product.Id,
-        ProductName = product.ProductName,
-        SerialNum = product.SerialNum,
-        ProductDesc = product.ProductDesc,
-        ImageUrl = product.ImageUrl,
-        Price = product.Price
+      Id = product.Id,
+      ProductName = product.ProductName,
+      SerialNum = product.SerialNum,
+      ProductDesc = product.ProductDesc,
+      ImageUrl = product.ImageUrl,
+      Price = product.Price
     };
 
-    return CreatedAtAction(
+    return CreatedAtAction(  // 201 Created
         nameof(GetProduct),
         new { serialNum = product.SerialNum },
-        product);
-}
+        productDto);
+  }
 
   //DELETE https://localhost:8000/products/{sku}
+  /// <summary>
+  /// Deletes product by serialNum
+  /// </summary>
   [HttpDelete("{serialNum}")]
+  [Produces("application/json")]
+  [ProducesResponseType(StatusCodes.Status204NoContent)]
+  [ProducesResponseType(StatusCodes.Status404NotFound)]
   public IActionResult DeleteProduct(string serialNum)
   {
     var product = context.Products.FirstOrDefault(x => x.SerialNum == serialNum);
@@ -131,12 +142,48 @@ public ActionResult<ProductDto> CreateProduct(Product product)
     return NoContent(); // 204 No Content
   }
 
+  /// <summary>
+  /// Data to create product
+  /// </summary>
+  public class CreateProductRequest
+  {
+
+    [Required]
+    [MaxLength(50)]
+    public string ProductName { get; set; }
+
+    [Required]
+    [MaxLength(10)]
+    public string SerialNum { get; set; }
+
+    [Required]
+    [MaxLength(50)]
+    public string ProductDesc { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string ImageUrl { get; set; }
+    public int Price { get; set; }
+  }
+
   public class ProductDto
   {
     public int Id { get; set; }
+
+    [Required]
+    [MaxLength(50)]
     public string ProductName { get; set; }
+
+    [Required]
+    [MaxLength(10)]
     public string SerialNum { get; set; }
+
+     [Required]
+    [MaxLength(50)]
     public string ProductDesc { get; set; }
+
+     [Required]
+    [MaxLength(100)]
     public string ImageUrl { get; set; }
     public int Price { get; set; }
   }

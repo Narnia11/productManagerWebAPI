@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ProductManagerWebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:ProductManagerWebAPI.Controllers.ProductsController.GetProducts(System.String)">
+            <summary>
+            Fetches all products
+            </summary>
+            <param name="productName">Filter on productName</param>
+            <returns>Array of products</returns>
+        </member>
+        <member name="M:ProductManagerWebAPI.Controllers.ProductsController.GetProduct(System.String)">
+            <summary>
+            Searches a product by serialNum
+            </summary>
+        </member>
+        <member name="M:ProductManagerWebAPI.Controllers.ProductsController.CreateProduct(ProductManagerWebAPI.Controllers.ProductsController.CreateProductRequest)">
+            <summary>
+            Creates new product
+            </summary>
+        </member>
+        <member name="M:ProductManagerWebAPI.Controllers.ProductsController.DeleteProduct(System.String)">
+            <summary>
+            Deletes product by serialNum
+            </summary>
+        </member>
+        <member name="T:ProductManagerWebAPI.Controllers.ProductsController.CreateProductRequest">
+            <summary>
+            Data to create product
+            </summary>
+        </member>
+        <member name="T:ProductManagerWebAPI.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:ProductManagerWebAPI.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ProductManagerWebAPI.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ProductManagerWebAPI.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
