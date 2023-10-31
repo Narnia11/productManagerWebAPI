@@ -16,10 +16,10 @@ namespace ProductManagerWebAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SerialNum = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    ProductDesc = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SerialNum = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductDesc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
