@@ -83,7 +83,9 @@ public class ProductsController : ControllerBase
   [Consumes("application/json")]
   [Produces("application/json")]
   [ProducesResponseType(StatusCodes.Status201Created)]
-  [ProducesResponseType(StatusCodes.Status400BadRequest)]//checks CreateProductRequest requirements&conditions
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  
+  //checks CreateProductRequest requirements&conditions
   public ActionResult<ProductDto> CreateProduct(CreateProductRequest request)
   {
     // Create a new product entity based on the data in the request.

@@ -6,7 +6,7 @@
     <members>
         <member name="M:ProductManagerWebAPI.Controllers.ProductsController.GetProducts(System.String)">
             <summary>
-            Fetches all products
+            Fetches all products or filters by product name.
             </summary>
             <param name="productName">Filter on productName</param>
             <returns>Array of products</returns>
