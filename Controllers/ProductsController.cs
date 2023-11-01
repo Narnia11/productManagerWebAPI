@@ -9,8 +9,9 @@ namespace ProductManagerWebAPI.Controllers;
 [Route("[controller]")]
 public class ProductsController : ControllerBase
 {
-  private readonly ApplicationDbContext context;
+  private readonly ApplicationDbContext context; //reference to database context.
 
+  //Constructor for the controller(as an instance of the database context)
   public ProductsController(ApplicationDbContext context)
   {
     this.context = context;
@@ -19,20 +20,20 @@ public class ProductsController : ControllerBase
   //GET https://localhost:8000/products
   //GET https://localhost:8000/products?productName={productName}
   /// <summary>
-  /// Fetches all products
+  /// Fetches all products or filters by product name.
   /// </summary>
   /// <param name="productName">Filter on productName</param>
   /// <returns>Array of products</returns>
   [HttpGet]
-  //[Produces("application/json")]
- // [ProducesResponseType(StatusCodes.Status200OK)]
+  [Produces("application/json")]
+  [ProducesResponseType(StatusCodes.Status200OK)]
   public IEnumerable<ProductDto> GetProducts([FromQuery] string? productName)
-  { 
+  {
     IEnumerable<Product> products = string.IsNullOrEmpty(productName)
         ? context.Products.ToList()
         : context.Products.Where(x => x.ProductName == productName);
 
-    // DTO - Data Transfer Object
+    //Create DTOs(Data Transfer Objects) for the products to send as responses.
     IEnumerable<ProductDto> productDtos = products.Select(x => new ProductDto
     {
       Id = x.Id,
@@ -61,6 +62,7 @@ public class ProductsController : ControllerBase
     if (product is null)
       return NotFound();// 404 Not Found
 
+    //Create a DTO for the found product
     var productDto = new ProductDto
     {
       Id = product.Id,
@@ -84,6 +86,7 @@ public class ProductsController : ControllerBase
   [ProducesResponseType(StatusCodes.Status400BadRequest)]//checks CreateProductRequest requirements&conditions
   public ActionResult<ProductDto> CreateProduct(CreateProductRequest request)
   {
+    // Create a new product entity based on the data in the request.
     var product = new Product
     {
       ProductName = request.ProductName,
@@ -103,6 +106,7 @@ public class ProductsController : ControllerBase
     context.Products.Add(product);
     context.SaveChanges();
 
+    // Create a DTO for the newly created product
     var productDto = new ProductDto
     {
       Id = product.Id,
@@ -129,6 +133,7 @@ public class ProductsController : ControllerBase
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   public IActionResult DeleteProduct(string serialNum)
   {
+    // Retrieve the product with the specified serial number from the database.
     var product = context.Products.FirstOrDefault(x => x.SerialNum == serialNum);
 
     if (product is null)
@@ -145,9 +150,8 @@ public class ProductsController : ControllerBase
   /// <summary>
   /// Data to create product
   /// </summary>
-  public class CreateProductRequest
+  public class CreateProductRequest //class for the request to create a product.
   {
-
     [Required]
     [MaxLength(50)]
     public string ProductName { get; set; }
@@ -166,7 +170,8 @@ public class ProductsController : ControllerBase
     public int Price { get; set; }
   }
 
-  public class ProductDto
+
+  public class ProductDto //class for the product DTO (Data Transfer Object)
   {
     public int Id { get; set; }
 
@@ -178,11 +183,11 @@ public class ProductsController : ControllerBase
     [MaxLength(10)]
     public string SerialNum { get; set; }
 
-     [Required]
+    [Required]
     [MaxLength(50)]
     public string ProductDesc { get; set; }
 
-     [Required]
+    [Required]
     [MaxLength(100)]
     public string ImageUrl { get; set; }
     public int Price { get; set; }
