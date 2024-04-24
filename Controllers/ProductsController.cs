@@ -6,8 +6,8 @@ using System.ComponentModel.DataAnnotations;
 namespace ProductManagerWebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class ProductsController : ControllerBase
+[Route("[controller]")] //to specify the URL path template of controller
+public class ProductsController : ControllerBase //ControllerBase provides a variety of methods for handling HTTP requests&responses
 {
   private readonly ApplicationDbContext context; //reference to database context.
 
@@ -18,7 +18,7 @@ public class ProductsController : ControllerBase
   }
 
   //GET https://localhost:8000/products
-  //GET https://localhost:8000/products?productName={productName}
+  //GET https://localhost:8000/products?productName={productName} //productName={productName} is th e query string
   /// <summary>
   /// Fetches all products or filters by product name.
   /// </summary>
@@ -27,14 +27,15 @@ public class ProductsController : ControllerBase
   [HttpGet]
   [Produces("application/json")]
   [ProducesResponseType(StatusCodes.Status200OK)]
-  public IEnumerable<ProductDto> GetProducts([FromQuery] string? productName)
+  public IEnumerable<ProductDto> GetProducts([FromQuery] string? productName) //[FromQuery] means productName should be bound from the query string of the incoming HTTP request
   {
+    //IEnumerable:we can iterate through a collection of items without to load the entire collection into memory
     IEnumerable<Product> products = string.IsNullOrEmpty(productName)
         ? context.Products.ToList()
         : context.Products.Where(x => x.ProductName == productName);
 
     //Create DTOs(Data Transfer Objects) for the products to send as responses.
-    IEnumerable<ProductDto> productDtos = products.Select(x => new ProductDto
+    IEnumerable<ProductDto> productDtos = products.Select(x => new ProductDto //.Select transforms all elements to new ProductDto
     {
       Id = x.Id,
       ProductName = x.ProductName,
@@ -55,7 +56,7 @@ public class ProductsController : ControllerBase
   [Produces("application/json")]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
-  public ActionResult<ProductDto> GetProduct(string serialNum)
+  public ActionResult<ProductDto> GetProduct(string serialNum) //GetProduct returns an ActionResult that contains a ProductDto object.
   {
     var product = context.Products.FirstOrDefault(x => x.SerialNum == serialNum);
 
@@ -85,7 +86,7 @@ public class ProductsController : ControllerBase
   [ProducesResponseType(StatusCodes.Status201Created)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   
-  //checks CreateProductRequest requirements&conditions
+  //checks CreateProductRequest requirements & conditions
   public ActionResult<ProductDto> CreateProduct(CreateProductRequest request)
   {
     // Create a new product entity based on the data in the request.
@@ -93,7 +94,7 @@ public class ProductsController : ControllerBase
     {
       ProductName = request.ProductName,
       SerialNum = request.SerialNum,
-      ProductDesc = request.ProductDesc,
+      ProductDesc = request.ProductDesc, 
       ImageUrl = request.ImageUrl,
       Price = request.Price
     };

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "h6GKVV6zZ6ql+X9O/r9KhwURl55IFC/BdsfmFm90/xgQGT0FirKf2iI9pAME6iDvd0MSsUJUEqJYGzdYtBha/Q==",
+  "dgSpecHash": "4Nlk/G67nKZBr+zIws4NNlCfLqHQVoLmjNELf/XZ2y1hp96zn79Fohfn5/HblxBJrdrNBqbiId7NHPp65b7+MQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\narge\\Desktop\\Backend2\\projektarbete\\ProductManagerWebAPI\\ProductManagerWebAPI.csproj",
+  "projectFilePath": "C:\\Users\\narge\\Desktop\\ECutbildning\\Backend2\\projektarbete\\ProductManagerWebAPI\\ProductManagerWebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\narge\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\narge\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

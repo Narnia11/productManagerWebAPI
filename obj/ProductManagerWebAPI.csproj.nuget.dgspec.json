@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\narge\\Desktop\\Backend2\\projektarbete\\ProductManagerWebAPI\\ProductManagerWebAPI.csproj": {}
+    "C:\\Users\\narge\\Desktop\\ECutbildning\\Backend2\\projektarbete\\ProductManagerWebAPI\\ProductManagerWebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\narge\\Desktop\\Backend2\\projektarbete\\ProductManagerWebAPI\\ProductManagerWebAPI.csproj": {
+    "C:\\Users\\narge\\Desktop\\ECutbildning\\Backend2\\projektarbete\\ProductManagerWebAPI\\ProductManagerWebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\narge\\Desktop\\Backend2\\projektarbete\\ProductManagerWebAPI\\ProductManagerWebAPI.csproj",
+        "projectUniqueName": "C:\\Users\\narge\\Desktop\\ECutbildning\\Backend2\\projektarbete\\ProductManagerWebAPI\\ProductManagerWebAPI.csproj",
         "projectName": "ProductManagerWebAPI",
-        "projectPath": "C:\\Users\\narge\\Desktop\\Backend2\\projektarbete\\ProductManagerWebAPI\\ProductManagerWebAPI.csproj",
+        "projectPath": "C:\\Users\\narge\\Desktop\\ECutbildning\\Backend2\\projektarbete\\ProductManagerWebAPI\\ProductManagerWebAPI.csproj",
         "packagesPath": "C:\\Users\\narge\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\narge\\Desktop\\Backend2\\projektarbete\\ProductManagerWebAPI\\obj\\",
+        "outputPath": "C:\\Users\\narge\\Desktop\\ECutbildning\\Backend2\\projektarbete\\ProductManagerWebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\narge\\AppData\\Roaming\\NuGet\\NuGet.Config",
